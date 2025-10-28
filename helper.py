@@ -28,3 +28,16 @@ def crt(a_values, mod_values):
 
     return x % N_mod
 
+
+def integer_nth_root_binary(num, deg):
+    low_bound, high_bound = 1, 1 << ((num.bit_length() + deg - 1) // deg + 1)
+    while low_bound < high_bound:
+        mid = (low_bound + high_bound) // 2
+        p = pow(mid, deg)
+        if p == num:
+            return mid
+        if p < num:
+            low_bound = mid + 1
+        else:
+            high_bound = mid
+    return low_bound - 1
