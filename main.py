@@ -5,15 +5,18 @@ def read_cn_values(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
-            if line.startswith('C'):
-                value = line.split('=')[1].strip()
+            if '=' not in line:
+                continue
+
+            left, right = line.split('=', 1)
+            value = int(right.strip(), 16)
+
+            if left.strip().startswith('C'):
                 C_values.append(value)
-            elif line.startswith('N'):
-                value = line.split('=')[1].strip()
+            elif left.strip().startswith('N'):
                 N_values.append(value)
 
     return C_values, N_values, len(C_values)
-
 
 def main():
     C_values, N_values, exp = read_cn_values('data/se_rsa_10_test.txt')
