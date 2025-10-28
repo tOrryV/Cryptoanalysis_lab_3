@@ -1,12 +1,10 @@
-def extended_gcd(num1, num2):
-    if num1 == 0:
-        return num2, 0, 1
-    gcd, x1, y1 = extended_gcd(num2 % num1, num1)
-
-    x = y1 - (num2 // num1) * x1
-    y = x1
-
-    return gcd, x, y
+def extended_gcd_iter(num1, num2):
+    x0, x1, y0, y1 = 1, 0, 0, 1
+    while num2 != 0:
+        q, num1, num2 = num1 // num2, num2, num1 % num2
+        x0, x1 = x1, x0 - q*x1
+        y0, y1 = y1, y0 - q*y1
+    return num1, x0, y0
 
 
 def crt(a_values, mod_values):
@@ -18,7 +16,7 @@ def crt(a_values, mod_values):
     for a, mod in zip(a_values, mod_values):
         M_i = N_mod // mod
 
-        g, inv, _ = extended_gcd(M_i, mod)
+        g, inv, _ = extended_gcd_iter(M_i, mod)
         if g != 1:
             raise ValueError("Inverse doesn't exist! The module must be mutually simple in pairs")
 
