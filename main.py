@@ -1,3 +1,7 @@
+from helper import crt
+from small_exp_attack import small_exponent_attack
+
+
 def read_cn_values(file_path):
     C_values = []
     N_values = []
@@ -19,7 +23,14 @@ def read_cn_values(file_path):
     return C_values, N_values, len(C_values)
 
 def main():
-    C_values, N_values, exp = read_cn_values('data/se_rsa_10_test.txt')
+    C_values, N_values, exp = read_cn_values('data/se_rsa_10.txt')
+    res_small_exp_attack = small_exponent_attack(C_values, N_values, exp)
+
+    C = crt(C_values, N_values)
+    if pow(res_small_exp_attack, exp) == C:
+        print("Success! Exact root: M^e == C")
+    else:
+        print("Ups.. Not exact: floor root was returned or insufficient data")
 
 
 if __name__ == '__main__':
