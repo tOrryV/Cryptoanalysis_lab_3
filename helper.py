@@ -1,3 +1,27 @@
+import time
+
+
+def read_cn_values(file_path):
+    C_values = []
+    N_values = []
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            if '=' not in line:
+                continue
+
+            left, right = line.split('=', 1)
+            value = int(right.strip(), 16)
+
+            if left.strip().startswith('C'):
+                C_values.append(value)
+            elif left.strip().startswith('N'):
+                N_values.append(value)
+
+    return C_values, N_values, len(C_values)
+
+
 def extended_gcd_iter(num1, num2):
     x0, x1, y0, y1 = 1, 0, 0, 1
     while num2 != 0:
@@ -39,3 +63,13 @@ def integer_nth_root_binary(num, deg):
         else:
             high_bound = mid
     return low_bound - 1
+
+
+def measure_time(func, *args, index=None):
+    start_time = time.time()
+    result = func(*args)
+    end_time = time.time()
+    execution_time = end_time - start_time
+    if index is not None:
+        result = result[index]
+    return result, execution_time
